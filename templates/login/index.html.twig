@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	{% block javascripts %}
+		{{parent()}}
+	{% endblock %}
+	<div id="fondoOscurecido"></div>
+	<div class="logregwindow">
+		<form action="{{ path('app_login') }}" method="post">
+			{% if error %}
+				<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			{% endif %}
+
+			<h1 style="font-size: 50px">
+				<span style="color:black">Dificil</span>
+				<span style="color:#0AA749">Auto</span>
+			</h1>
+			<div class="email">
+				<div class="lblEm">
+					<label for="inputEmail"></label>
+				</div>
+				<div class="inpEm">
+					<input placeholder="Email" type="text" id="username" name="_username" value="{{ last_username }}">
+				</div>
+			</div>
+			<br><br>
+			<div class="pass">
+				<label for="inputPassword"></label>
+				<input placeholder="Contraseña" type="password" id="password" name="_password">
+			</div>
+
+            <input type="hidden" name="" value="/account">
+
+			<br>
+			<a href="#">¿Has olvidado tu contraseña?</a>
+
+			<br><br>
+			<button class="btn btn-lg btn-primary" name="login" type="submit">
+				Acceder
+			</button>
+			<br><br>
+			<button id="abrirModal" type="button">
+				Registro
+			</button>
+		</form>
+
+		<div id="miModal" class="modal">
+			<div id="modal-contenido">
+				<span class="cerrar" id="cerrarModal">&times;</span>
+				<div id="content"></div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

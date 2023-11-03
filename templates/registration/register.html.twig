@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register
+{% endblock %}
+
+{% block body %}
+	{% for flash_error in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+
+	<h1 style="font-size: 50px">
+		<span style="color:black">Regístrate en Dificil</span>
+		<span style="color:#0AA749">Auto</span>
+	</h1>
+
+	{{ form_start(registrationForm, {'attr': {'id': 'form_person_edit'}}) }}
+    {{ form_label(registrationForm.Email, 'Email',  { 'label_attr': {'class': 'labelReg'} }) }}
+    {{ form_errors(registrationForm.Email) }}
+    <br><br>
+	{{ form_widget(registrationForm.Email, { 'attr': {'placeholder': 'Email'}}) }}
+	<br><br>
+    {{ form_label(registrationForm.plainPassword, 'Contraseña', { 'label_attr': {'class': 'labelReg'} })}}
+    {{ form_errors(registrationForm.plainPassword) }}
+    <br><br>
+	{{ form_widget(registrationForm.plainPassword, { 'attr': {'placeholder': 'Contraseña'}}) }}
+
+	<br><br><br>
+	<button type="submit" class="btn" name="registro">Registrar</button>
+	{{ form_end(registrationForm) }}
+{% endblock %}

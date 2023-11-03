@@ -1,0 +1,487 @@
+body {
+    background-image: url("../images/bgscreen.jpg");
+    background-size: cover;
+    padding-right: 20%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    padding-right: 20%;
+}
+
+.logregwindow {
+    background: rgba(255, 255, 255, 0.5);
+    width: auto;
+    height: auto;
+    float: right;
+    border-radius: 5%;
+    padding: 3%;
+    padding-top: 0;
+    text-align: center;
+
+}
+
+.formWindow {
+    background: rgba(255, 255, 255, 0.5);
+    width: 80%;
+    height: auto;
+    border-radius: 5%;
+    padding: 3%;
+    margin-left: 15%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.formWindow textarea {
+    width: 100%;
+    padding: 10px;
+    /* Espaciado interno del textarea */
+    border: 1px solid #ccc;
+    /* Borde del textarea */
+    border-radius: 5px;
+}
+
+.formWindow label {
+    font-size: x-large;
+}
+
+input.imagenVideo {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+.h1dif {
+    color: black;
+}
+
+.h1auto {
+    color: #0AA749;
+}
+
+input {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    background-color: #0AA749;
+    height: 20px;
+    width: 200px;
+    padding: 5%;
+    position: relative;
+}
+
+/* label {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    background-color: #FFFFFF;
+    position: relative;
+    height: 20px;
+    width: 20px;
+
+} */
+
+a {
+    font-size: small;
+    text-align: center;
+    color: black;
+}
+
+button {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    border-radius: 15%;
+    background: transparent;
+    background-color: #0AA749;
+    height: 40px;
+    width: 100px;
+    color: #FFFFFF;
+    font-size: large;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #00752f;
+}
+
+::placeholder {
+    text-decoration: double;
+    color: black;
+    font-size: large;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+}
+
+#modal-contenido {
+    background: rgba(255, 255, 255, 0.5);
+    margin: 10% auto;
+    padding: 20px;
+    width: 20%;
+    height: auto;
+    border-radius: 10%;
+    border-width: 1mm;
+    border-style: solid;
+}
+
+.cerrar {
+    float: right;
+    cursor: pointer;
+}
+
+#fondoOscurecido {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Color de fondo semitransparente */
+    z-index: 1000;
+    /* Debe estar por encima de otros elementos */
+    display: none;
+    /* Inicialmente oculto */
+}
+
+.barrasup {
+    background: rgba(255, 255, 255, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    padding-left: 50px;
+    padding-bottom: 10px;
+}
+
+.grande {
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+.media {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.contenido {
+    position: fixed;
+    top: 110px;
+    /* Asegúrate de que esta posición sea igual a la altura de .barrasup */
+    bottom: 110px;
+    /* Asegúrate de que esta posición sea igual a la altura de .barrafoot */
+    left: 0;
+    right: 0;
+    overflow: auto;
+    /* Agrega una barra de desplazamiento cuando sea necesario */
+    background-color: rgba(217, 217, 217, 0.25);
+    flex-direction: row;
+}
+
+.barrafoot {
+    background: rgba(255, 255, 255, 0.5);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    padding-left: 50px;
+    padding-bottom: 10px;
+}
+
+
+.barradif {
+    background-color: #00752f;
+    position: fixed;
+    bottom: 200px;
+    left: 0;
+    right: 0;
+    height: 150px;
+}
+
+.barrahidden {
+    background: transparent;
+    position: absolute;
+    top: 110px;
+    /* Ajusta la distancia entre las barras si es necesario */
+    left: 0;
+    right: 0;
+    height: 100px;
+    /* Mismo tamaño que la barra superior */
+    padding-left: 50px;
+    /* Puedes ajustar el padding si es necesario */
+    padding-bottom: 10px;
+    /* Puedes ajustar el padding si es necesario */
+}
+
+.alum {
+    background: rgba(217, 217, 217, 0.25);
+    height: 100px;
+    border-bottom: 2px solid gray;
+}
+
+.num {
+    background-color: #0AA749;
+    float: left;
+    position: relative;
+    height: 100px;
+    width: 100px;
+    text-align: center;
+}
+
+.usid {
+    position: relative;
+    float: left;
+    padding-left: 20px;
+    width: fit-content;
+    text-align: center;
+}
+
+.selOpc {
+    position: relative;
+    float: right;
+    text-align: center;
+    margin-top: 30px;
+    margin-right: 50px;
+}
+
+button.cerrarSesion {
+    text-align: center;
+    float: right;
+    width: 200px;
+    height: 110px;
+    background-color: red;
+    color: white;
+    border-radius: 0;
+    font-size: medium;
+}
+
+button.cerrarSesion:hover {
+    width: 210px;
+}
+
+button.Volver {
+    text-align: center;
+    float: right;
+    width: 200px;
+    height: 110px;
+    background-color: #0AA749;
+    color: white;
+    border-radius: 0;
+    font-size: medium;
+}
+
+button.Volver:hover {
+    width: 210px;
+}
+
+button.validar {
+    text-align: center;
+    float: right;
+    width: 200px;
+    height: 110px;
+    background-color: #495BFF;
+    color: black;
+    border-radius: 0;
+    font-size: medium;
+}
+
+button.examen {
+    text-align: center;
+    float: right;
+    width: 200px;
+    height: 110px;
+    background-color: #00D1FF;
+    color: black;
+    border-radius: 0;
+    font-size: medium;
+}
+
+button.preguntas {
+    text-align: center;
+    float: right;
+    width: 200px;
+    height: 110px;
+    background-color: #49A8FF;
+    color: black;
+    border-radius: 0;
+    font-size: medium;
+}
+
+button.preguntas:hover,
+button.examen:hover,
+button.validar:hover {
+    height: 120px;
+}
+
+button.inicial {
+    text-align: center;
+    float: left;
+    width: 25%;
+    height: 150px;
+    background-color: green;
+    color: white;
+    border-radius: 0;
+    font-size: large;
+    color: black;
+}
+
+button.media {
+    text-align: center;
+    float: left;
+    width: 25%;
+    height: 150px;
+    background-color: yellow;
+    color: white;
+    border-radius: 0;
+    font-size: large;
+    color: black;
+}
+
+button.media:hover,
+button.alta:hover,
+button.inicial:hover,
+button.categorias:hover {
+    height: 160px;
+}
+
+button.alta {
+    text-align: center;
+    float: left;
+    width: 25%;
+    height: 150px;
+    background-color: rgb(216, 55, 55);
+    color: white;
+    border-radius: 0;
+    font-size: large;
+    color: black;
+}
+
+button.categorias {
+    text-align: center;
+    float: left;
+    width: 25%;
+    height: 150px;
+    background-color: orange;
+    color: white;
+    border-radius: 0;
+    font-size: large;
+    color: black;
+}
+
+.h1main {
+    float: left;
+    width: fit-content;
+    font-weight: bold;
+    font-size: 50px;
+
+}
+
+.usid {
+    position: absolute;
+    padding-left: 120px;
+}
+
+select {
+    padding: 8px;
+    /* Espacio interno alrededor del select */
+    font-size: 16px;
+    /* Tamaño de fuente */
+    border: 1px solid #ccc;
+    /* Borde del select */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    background-color: #f0f0f0;
+    /* Color de fondo */
+    color: #333;
+    /* Color del texto */
+}
+
+/* Estilo para las opciones (option) dentro del select */
+select option {
+    background-color: #fff;
+    /* Color de fondo de las opciones */
+    color: #333;
+    /* Color del texto de las opciones */
+    padding: 5px;
+    /* Espacio interno alrededor de las opciones */
+}
+
+select option:checked {
+    background-color: #0AA749;
+    /* Color de fondo de la opción seleccionada */
+    color: #fff;
+    /* Color del texto de la opción seleccionada */
+}
+
+button.accept {
+    float: right;
+    position: relative;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    background-image: url("../images/tick.png");
+    background-size: cover;
+    margin-top: 25px;
+    margin-right: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.accept:hover {
+    background-color: #ccc;
+}
+
+button.cancel {
+    float: right;
+    position: relative;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    background-image: url("../images/cross.png");
+    background-size: cover;
+    margin-top: 25px;
+    margin-right: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.cancel:hover {
+    background-color: #ccc;
+}
+
+button.save {
+    float: right;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: transparent;
+    background-image: url("../images/guardar.png");
+    background-size: cover;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 5%;
+}
+
+button.save:hover {
+    background-color: #ccc;
+}
+
+.gigante {
+    font-size: 50px;
+}
+
+input[type="radio"] {
+    background-color: rgba(217, 217, 217, 0.7);
+}

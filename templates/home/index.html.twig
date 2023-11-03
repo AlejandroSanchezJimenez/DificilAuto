@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	{% block javascripts %}
+		{{parent()}}
+	{% endblock %}
+	{% block header %}
+		{{parent()}}
+	{% endblock %}
+	{% if "ROLE_PROFESOR" in app.user.roles or "ROLE_ADMIN" in app.user.roles %}
+	<div class="barrahidden">
+		<button class="preguntas" id="creaPreguntas">
+			<p class="media">Crear
+				<br>
+				preguntas</p>
+		</button>
+		<button class="examen" id="creaExamenes">
+			<p class="media">Crear
+				<br>
+				examen
+			</p>
+		</button>
+		{% if "ROLE_ADMIN" in app.user.roles %}
+		<button class="validar" id="validaAlumnos">
+			<p class="media">Validar
+				<br>
+				alumnos
+			</p>
+		</button>
+		{% endif %}
+	</div>
+	{% endif %}
+	<div class="barradif">
+		<button class="inicial" id="examenInicial">
+			<p class="grande">Inicial</p>
+		</button>
+		<button class="media" id="examenMedia">
+			<p class="grande">Media</p>
+		</button>
+		<button class="alta" id="examenAlta">
+			<p class="grande">Alta</p>
+		</button>
+		<button class="categorias" id="examenCategoria">
+			<p class="grande">Categorías</p>
+		</button>
+	</div>
+	{% block footer %}
+		{{parent()}}
+	{% endblock %}
+{% endblock %}

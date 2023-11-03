@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+	{% block javascripts %}
+		{{parent()}}
+	{% endblock %}
+	{% block header %}
+		{{parent()}}
+	{% endblock %}
+	<div class="formWindow">
+		<form id="nuevaPreguntaForm">
+			<p class="gigante">Nuevo examen</p>
+			<label>Selecciona el tipo de examen:</label><br><br>
+            <div class="checks">
+			<input type="radio" id="radioCategoria" name="opcion" value="categoria">
+			<label for="radioCategoria">Categoría</label>
+
+			<input type="radio" id="radioDificultad" name="opcion" value="dificultad">
+			<label for="radioDificultad">Dificultad</label>
+            </div>
+
+            <br><br>
+
+		</form>
+	</div>
+
+	{% block footer %}
+		{{parent()}}
+	{% endblock %}
+{% endblock %}

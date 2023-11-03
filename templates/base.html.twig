@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}DificilAuto
+			{% endblock %}
+		</title>
+		<link rel="icon" href="{{asset('assets/images/logo.ico')}}">
+
+		{% block stylesheets %}
+			<link rel="stylesheet" href="{{asset('assets/css/home.css')}}">
+		{% endblock %}
+	</head>
+	<body>
+		{% block body %}
+			{% block javascripts %}
+				<script src="{{asset('assets/js/modal.js')}}"></script>
+				<script src="{{asset('assets/js/redireccion.js')}}"></script>
+				<script src="{{asset('assets/js/validador.js')}}"></script>
+				<script src="{{asset('assets/js/creaPreguntas.js')}}"></script>
+				<script src="{{asset('assets/js/funciones.js')}}"></script>
+				<script src="{{asset('assets/js/creaExamen.js')}}"></script>
+			{% endblock %}
+			{% block header %}
+				<div class="barrasup">
+					<p class="h1main">
+						<span style="color:black">Dificil</span>
+						<span style="color:#0AA749">Auto</span>
+					</p>
+					<button class="cerrarSesion" id="cerrarSesion">
+						<p class="media">Cerrar
+							<br>
+							sesión</p>
+					</button>
+				</div>
+			{% endblock %}
+			{% block footer %}
+				<div class="barrafoot">
+					{% if app.request.getRequestUri() != '/home' %}
+						<button class="Volver" id="pageBack">
+							<p class="grande">Volver</p>
+						</button>
+					{% endif %}
+					<p class="grande">
+						{{rol}}:
+						{{logged_user}}
+					</p>
+				</div>
+			{% endblock %}
+		{% endblock %}
+	</body>
+</html>

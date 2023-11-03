@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	{% block javascripts %}
+		{{parent()}}
+	{% endblock %}
+	{% block header %}
+		{{parent()}}
+	{% endblock %}
+	<div class="formWindow">
+		<form id="nuevaPreguntaForm">
+			<p class="gigante">Nueva pregunta</p>
+			<label for="enunciado">Enunciado:</label><br><br>
+			<textarea id="enunciado" name="enunciado" placeholder="Enunciado" rows="5" cols="50"></textarea><br><br>
+
+            <label for="imagenVideo">Imagen o Video: *</label><br><br>
+            <input type="file" id="imagenVideo" name="imagenVideo" class="imagenVideo"><br><br>
+            <img id="imagenPrevia" style="display: none;" src="" width="300" height="200"><br><br>
+
+			<label for="opcion1">Opción 1:</label><br><br>
+			<textarea id="opcion1" name="opcion1" placeholder="Opción 1" rows="5" cols="50"></textarea><br><br>
+
+			<label for="opcion2">Opción 2:</label><br><br>
+			<textarea id="opcion2" name="opcion2" placeholder="Opción 2" rows="5" cols="50"></textarea><br><br>
+
+			<label for="opcion3">Opción 3:</label><br><br>
+			<textarea id="opcion3" name="opcion3" placeholder="Opción 3" rows="5" cols="50"></textarea><br><br>
+
+			<label for="correcta">Correcta:</label>
+			<select id="correcta" name="correcta" id="correcta">
+				<option>Opción 1</opcion>
+				<option>Opción 2</opcion>
+				<option>Opción 3</opcion>
+			</select><br><br>
+
+			<label for="categoria">Categoría:</label>
+			<select id="categoria" name="categoria" ></select><br><br>
+
+			<label for="dificultad">Dificultad:</label>
+			<select id="dificultad" name="dificultad"></select><br><br>
+
+            <button type="submit" class="save" id="save"></button><br><br><br><br>
+		</form>
+	</div>
+	{% block footer %}
+		{{parent()}}
+	{% endblock %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	{% block javascripts %}
+		{{parent()}}
+	{% endblock %}
+
+	{% block header %}
+		{{parent()}}
+	{% endblock %}
+	<div class="contenido">
+		{% set i = 1 %}
+		{% for user in users %}
+			<div class="alum">
+				<div class="num">
+					<p class="grande">{{i}}</p>
+				</div>
+				<div class="usid">
+					<p class="grande">{{user.email}}</p>
+				</div>
+				<button class="cancel" data-id={{user.id}}></button>
+				<button class="accept" data-id={{user.id}}></button>
+				<select class="selOpc" id="selOpc">
+					<option value="usuario" selected>ROLE_USER</option>
+					<option value="profesor">ROLE_PROFESOR</option>
+					<option value="admin">ROLE_ADMIN</option>
+				</select>
+			</div>
+			{% set i = i + 1 %}
+		{% endfor %}
+	</div>
+	{% block footer %}
+		{{parent()}}
+	{% endblock %}
+{% endblock %}
