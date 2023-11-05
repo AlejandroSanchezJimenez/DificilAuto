@@ -21,9 +21,13 @@ class Categoria
     #[ORM\OneToMany(mappedBy: 'idCategoria', targetEntity: Pregunta::class, orphanRemoval: true)]
     private Collection $preguntas;
 
+    #[ORM\OneToMany(mappedBy: 'Categoria', targetEntity: Examen::class)]
+    private Collection $examens;
+
     public function __construct()
     {
         $this->preguntas = new ArrayCollection();
+        $this->examens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,6 +71,36 @@ class Categoria
             // set the owning side to null (unless already changed)
             if ($pregunta->getIdCategoria() === $this) {
                 $pregunta->setIdCategoria(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Examen>
+     */
+    public function getExamens(): Collection
+    {
+        return $this->examens;
+    }
+
+    public function addExamen(Examen $examen): static
+    {
+        if (!$this->examens->contains($examen)) {
+            $this->examens->add($examen);
+            $examen->setCategoria($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExamen(Examen $examen): static
+    {
+        if ($this->examens->removeElement($examen)) {
+            // set the owning side to null (unless already changed)
+            if ($examen->getCategoria() === $this) {
+                $examen->setCategoria(null);
             }
         }
 

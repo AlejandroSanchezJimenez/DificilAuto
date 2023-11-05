@@ -96,7 +96,6 @@ window.addEventListener("DOMContentLoaded", function () {
                 // Lee el archivo como base64
                 reader.readAsDataURL(selectedFile);
             }
-            document.getElementById("nuevaPreguntaForm").reset();
             window.scrollTo(0, 0);
         })
     }

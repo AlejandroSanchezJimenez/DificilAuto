@@ -20,12 +20,12 @@ body {
 }
 
 .formWindow {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.9);
     width: 80%;
     height: auto;
     border-radius: 5%;
     padding: 3%;
-    margin-left: 15%;
+    margin-left: 20%;
     margin-top: 5%;
     margin-bottom: 5%;
 }
@@ -485,3 +485,22 @@ button.save:hover {
 input[type="radio"] {
     background-color: rgba(217, 217, 217, 0.7);
 }
+
+input[type="checkbox" i] {
+    padding: 2px;
+    background-color: #00752f;
+}
+
+.separator {
+    border: none;
+    border-top: 2px solid #000; /* Puedes personalizar el grosor y el color */
+  }
+
+  .indiceCat, .indiceDif {
+    display: none;
+    height: auto;
+  }
+
+  .generadaDif, .generadaCat, .checkboxes, .checkboxesAlum {
+    margin: 1%;
+  }

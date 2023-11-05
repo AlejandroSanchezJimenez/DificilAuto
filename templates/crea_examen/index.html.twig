@@ -8,9 +8,11 @@
 	{% block header %}
 		{{parent()}}
 	{% endblock %}
-	<div class="formWindow">
-		<form id="nuevaPreguntaForm">
+	<div class="formWindow" id="formWindow">
+		<form id="nuevoExamenForm">
 			<p class="gigante">Nuevo examen</p>
+			
+			<hr class="separator">
 			<label>Selecciona el tipo de examen:</label><br><br>
             <div class="checks">
 			<input type="radio" id="radioCategoria" name="opcion" value="categoria">
@@ -18,7 +20,33 @@
 
 			<input type="radio" id="radioDificultad" name="opcion" value="dificultad">
 			<label for="radioDificultad">Dificultad</label>
-            </div>
+			<hr class="separator">
+            </div>			
+
+			<div id="selectDif" class="indiceDif">
+			<label id="labelDif">Selecciona una dificultad<br></label>
+			<hr class="separator">
+			</div>
+
+			<div id="selectAlumDif" class="indiceDif">
+			<label id="labelAlumDif">Selecciona los alumnos que podrán ver el examen<br></label>
+			<hr class="separator">
+			</div>
+
+			<div id="selectCat" class="indiceCat">
+			<label id="labelCat">Selecciona una categoria<br></label>
+			<hr class="separator">
+			</div>
+
+			<div id="selectPreg" class="indiceCat">
+			<label id="labelPreg">Selecciona las preguntas (Tienes que seleccionar 10 preguntas)<br></label>
+			<hr class="separator">
+			</div>
+
+			<div id="selectAlum" class="indiceCat">
+			<label id="labelAlum">Selecciona los alumnos que podrán ver el examen<br></label>
+			<hr class="separator">
+			</div>
 
             <br><br>
 

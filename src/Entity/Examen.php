@@ -25,6 +25,15 @@ class Examen
     #[ORM\OneToMany(mappedBy: 'idExamen', targetEntity: Intento::class, orphanRemoval: true)]
     private Collection $intentos;
 
+    #[ORM\Column(length: 20)]
+    private ?string $Tipo = null;
+
+    #[ORM\ManyToOne(inversedBy: 'examens')]
+    private ?Categoria $Categoria = null;
+
+    #[ORM\ManyToOne(inversedBy: 'examens')]
+    private ?Dificultad $Dificultad = null;
+
     public function __construct()
     {
         $this->idPreguntas = new ArrayCollection();
@@ -98,6 +107,30 @@ class Examen
                 $intento->setIdExamen(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategoria(): ?Categoria
+    {
+        return $this->Categoria;
+    }
+
+    public function setCategoria(?Categoria $Categoria): static
+    {
+        $this->Categoria = $Categoria;
+
+        return $this;
+    }
+
+    public function getDificultad(): ?Dificultad
+    {
+        return $this->Dificultad;
+    }
+
+    public function setDificultad(?Dificultad $Dificultad): static
+    {
+        $this->Dificultad = $Dificultad;
 
         return $this;
     }

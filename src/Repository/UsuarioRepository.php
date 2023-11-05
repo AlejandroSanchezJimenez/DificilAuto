@@ -52,6 +52,19 @@ class UsuarioRepository extends ServiceEntityRepository implements PasswordUpgra
        ;
    }
 
+   /**
+    * @return Usuario[] Returns an array of Usuario objects
+    */
+    public function findUsers(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles like :val')
+            ->setParameter('val', '%"ROLE_USER"%')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    public function findOneBySomeField($value): ?Usuario
 //    {
 //        return $this->createQueryBuilder('u')

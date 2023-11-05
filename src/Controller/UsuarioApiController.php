@@ -69,7 +69,7 @@ class UsuarioApiController extends AbstractController
     #[Route('/usuario/api', name: 'app_usuario_api_getAll', methods: ['GET'])]
     public function getAllUsuarios(UsuarioRepository $usuarioRepository): JsonResponse
     {
-        $usuarios = $usuarioRepository->findAll();
+        $usuarios = $usuarioRepository->findUsers();
         $data = [];
 
         foreach ($usuarios as $usuario) {
