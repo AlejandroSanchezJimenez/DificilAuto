@@ -172,28 +172,33 @@ window.addEventListener("DOMContentLoaded", function () {
                                                                         arrayAlum.push(elemento.value);
                                                                     });
 
-                                                                    const updatedPreguntaData = {
+                                                                    var comboCat = document.getElementById('categoria');
+                                                                    var selectedCat = comboCat.options[comboCat.selectedIndex].value;
+
+                                                                    const postExamenData = {
                                                                         preguntas: arrayPreg,
-                                                                        intentos: arrayAlum,
+                                                                        alumnos: arrayAlum,
+                                                                        categoria: selectedCat,
+                                                                        dificultad: null
                                                                     };
 
-                                                                    console.log(updatedPreguntaData);
+                                                                    console.log(postExamenData);
 
-                                                                    // fetch("https://localhost:8000/examen/api", {
-                                                                    //     method: 'POST',
-                                                                    //     headers: {
-                                                                    //         'Content-Type': 'application/json',
-                                                                    //     },
-                                                                    //     body: JSON.stringify(updatedPreguntaData),
-                                                                    // })
-                                                                    //     .then(response => response.json())
-                                                                    //     .then(data => {
-                                                                    //         alert('Examen aceptado con éxito:', data);
-                                                                    //     })
-                                                                    //     .catch(error => {
-                                                                    //         alert('Error al aceptar el usuario:', error);
-                                                                    //     });
-                                                                    // window.scrollTo(0, 0);
+                                                                    fetch("https://localhost:8000/examen/api", {
+                                                                        method: 'POST',
+                                                                        headers: {
+                                                                            'Content-Type': 'application/json',
+                                                                        },
+                                                                        body: JSON.stringify(postExamenData),
+                                                                    })
+                                                                        .then(response => response.json())
+                                                                        .then(data => {
+                                                                            alert('Examen aceptado con éxito:', data);
+                                                                        })
+                                                                        .catch(error => {
+                                                                            alert('Error al aceptar el usuario:', error);
+                                                                        });
+                                                                    window.scrollTo(0, 0);
                                                                 });
                                                             }
                                                         } else if ((document.getElementById("alumnos") !== null) && (checkboxesMarcados < 1)) {
@@ -338,7 +343,40 @@ window.addEventListener("DOMContentLoaded", function () {
                                             save.addEventListener("click", function (ev) {
                                                 ev.preventDefault();
 
-                                                console.log("adios");
+                                                const checkboxesMarcadosAlum = document.querySelectorAll('.checkboxes:checked');
+                                                var arrayAlum = [];
+
+                                                checkboxesMarcadosAlum.forEach(function (elemento) {
+                                                    arrayAlum.push(elemento.value);
+                                                });
+
+                                                var comboDif = document.getElementById('dificultad');
+                                                var selectedDif = comboDif.options[comboDif.selectedIndex].value;
+
+                                                const postExamenDataDif = {
+                                                    preguntas: null,
+                                                    alumnos: arrayAlum,
+                                                    dificultad: selectedDif,
+                                                    categoria: null
+                                                };
+
+                                                console.log(postExamenDataDif);
+
+                                                fetch("https://localhost:8000/examen/api", {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                    },
+                                                    body: JSON.stringify(postExamenDataDif),
+                                                })
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        alert('Examen aceptado con éxito:', data);
+                                                    })
+                                                    .catch(error => {
+                                                        alert('Error al aceptar el usuario:', error);
+                                                    });
+                                                window.scrollTo(0, 0);
                                             });
                                         }
                                     } else if ((document.getElementById("alumnos") !== null) && (checkboxesMarcados != limit)) {

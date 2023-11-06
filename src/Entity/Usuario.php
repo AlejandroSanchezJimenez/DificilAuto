@@ -37,9 +37,13 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'idAlumno', targetEntity: Intento::class, orphanRemoval: true)]
     private Collection $intentos;
 
+    #[ORM\ManyToMany(targetEntity: Examen::class, mappedBy: 'Alumnos')]
+    private Collection $examens;
+
     public function __construct()
     {
         $this->intentos = new ArrayCollection();
+        $this->examens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -149,6 +153,33 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
             if ($intento->getIdAlumno() === $this) {
                 $intento->setIdAlumno(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Examen>
+     */
+    public function getExamens(): Collection
+    {
+        return $this->examens;
+    }
+
+    public function addExamen(Examen $examen): static
+    {
+        if (!$this->examens->contains($examen)) {
+            $this->examens->add($examen);
+            $examen->addAlumno($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExamen(Examen $examen): static
+    {
+        if ($this->examens->removeElement($examen)) {
+            $examen->removeAlumno($this);
         }
 
         return $this;
