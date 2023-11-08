@@ -3,25 +3,44 @@ window.addEventListener("DOMContentLoaded", function () {
     if (window.location.pathname === '/test') {
         const pantalla = document.getElementById('nuevoIntentoForm');
         var parametros = new URLSearchParams(window.location.search);
-        var id = parametros.get("id");
+        var exId = parametros.get("exId");
+        var usId = parametros.get("usId");
 
         function finalizar() {
-            var radioInputs = document.querySelectorAll('input[type="radio"]');
-            var checkedRadioValues = {};
-
-            radioInputs.forEach(function (radioInput) {
-                if (radioInput.checked) {
-                    var name = radioInput.name;
-                    var id = radioInput.id;
-                    if (!checkedRadioValues[name]) {
-                        checkedRadioValues[name] = [];
+            respuestas = [];
+            for (var i = 0; i < 10; i++) {
+                var name = "preg" + i;
+                var radioElements = document.querySelectorAll('input[type="radio"][name="' + name + '"]');
+                
+                radioElements.forEach(function (radioInput) {
+                    if (radioInput.checked) {
+                        respuestas.push(radioInput.id);
                     }
-                    checkedRadioValues[name].push(id);
-                }
-            });
+                });
+            }
+            const postIntentoData = {
+                jsonRespuestas: respuestas,
+                idalumno: usId,
+                idexamen: exId
+            };
 
-            console.log(checkedRadioValues);
+            fetch("https://localhost:8000/intento/api", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postIntentoData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Intento guardado con éxito:', data);
+                })
+                .catch(error => {
+                    // console.error('Error al guardar el intento:', error);
+                    alert('Error al guardar el intento:', error.message); // Muestra el mensaje de error en una alerta
+                });
         }
+
 
         this.document.body.addEventListener("click", function (ev) {
 
@@ -54,7 +73,7 @@ window.addEventListener("DOMContentLoaded", function () {
             }
         })
 
-        fetch("https://localhost:8000/pregunta/api/byExamen/" + id)
+        fetch("https://localhost:8000/pregunta/api/byExamen/" + exId)
             .then(x => x.json())
             .then(preg => {
                 for (let i = 0; i < preg.length; i++) {

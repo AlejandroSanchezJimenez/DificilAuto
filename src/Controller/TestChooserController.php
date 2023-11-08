@@ -28,6 +28,8 @@ class TestChooserController extends AbstractController
     {
         $email= $this->security->getUser()->getUserIdentifier();
         $rol = $this->security->getUser()->getRoles();
+        $usuario = $this->user->findOneByEmail($email);
+        $id = $usuario->getId();
 
         if (!empty($_GET["dif"])) {
             $dif=$_GET["dif"];
@@ -40,7 +42,8 @@ class TestChooserController extends AbstractController
         return $this->render('test_chooser/index.html.twig', [
             'rol' => $rol[0],
             'examenes' => $examenes,
-            'logged_user' => $email
+            'logged_user' => $email,
+            'id' => $id
         ]);
     }
 }

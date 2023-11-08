@@ -55,8 +55,9 @@ window.addEventListener("load", function () {
         // Agrega un evento de clic a cada botón
         buttons.forEach(function (button) {
             button.addEventListener("click", function () {
-                var id = this.getAttribute("data-id");
-                window.location.href = "/test?id="+id;
+                var exId = this.getAttribute("data-exId");
+                var usId = this.getAttribute("data-usId");
+                window.location.href = "/test?exId="+exId+'&usId='+usId;
             });
         });
 
