@@ -52,6 +52,16 @@ class PreguntaRepository extends ServiceEntityRepository
        ;
    }
 
+   public function findByDifRand($dif)
+   {
+       $conn = $this->getEntityManager()
+           ->getConnection();
+       $sql = 'select * from pregunta where id_dificultad_id='.$dif.' order by rand() limit 10';
+       $stmt = $conn->prepare($sql);
+       $result = $stmt->executeQuery();
+       return $result->fetchAllAssociative();
+   }
+
    public function findByDif($dif)
    {
        $conn = $this->getEntityManager()

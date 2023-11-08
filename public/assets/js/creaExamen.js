@@ -127,10 +127,12 @@ window.addEventListener("DOMContentLoaded", function () {
                                                     checkbox.name = "checkbox" + (i + 1);
                                                     checkbox.value = data[i].id;
                                                     checkbox.className = "checkboxesAlum";
+                                                    checkbox.id = "checkbox" + (i + 1);
 
                                                     const label = document.createElement("label");
                                                     label.textContent = data[i].email + "\n";
                                                     label.className = "generadaCat";
+                                                    label.for
 
                                                     const br = document.createElement("br");
                                                     br.className = "generadaBRCat";

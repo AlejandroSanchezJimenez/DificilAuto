@@ -65,13 +65,13 @@ class UsuarioRepository extends ServiceEntityRepository implements PasswordUpgra
         ;
     }
 
-//    public function findOneBySomeField($value): ?Usuario
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+   public function findOneByEmail($value): ?Usuario
+   {
+       return $this->createQueryBuilder('u')
+           ->andWhere('u.Email = :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
 }

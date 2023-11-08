@@ -47,7 +47,7 @@ class ExamenApiController extends AbstractController
             $dificultad=$difrep->find($iddificultad);
             $examen->setDificultad($dificultad);
 
-            $preguntas = $pregrep->findByDif($data['dificultad']);
+            $preguntas = $pregrep->findByDifRand($data['dificultad']);
 
             for ($i = 0; $i < count($preguntas); $i++) {
                 $pregunta = new Pregunta();

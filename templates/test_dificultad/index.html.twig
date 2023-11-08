@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	{% block javascripts %}
+		{{parent()}}
+	{% endblock %}
+	{% block header %}
+		{{parent()}}
+	{% endblock %}
+	<div class="contenido">
+		<form id="nuevoIntentoForm">
+		<div id="content"></div>
+
+			<div class="quizNav">
+				<p class="media">Navegador</p>
+				<div class="buttonsQuiz">
+					<button class="buttonQuiz" id="1">1</button>
+					<button class="buttonQuiz" id="2">2</button>
+					<button class="buttonQuiz" id="3">3</button>
+					<button class="buttonQuiz" id="4">4</button>
+					<button class="buttonQuiz" id="5">5</button>
+					<button class="buttonQuiz" id="6">6</button>
+					<button class="buttonQuiz" id="7">7</button>
+					<button class="buttonQuiz" id="8">8</button>
+					<button class="buttonQuiz" id="9">9</button>
+					<button class="buttonQuiz" id="10">10</button>
+				</div>
+                <br>
+                <button class="finalizar">Finalizar intento...</button>
+			</div>
+		</form>
+
+		<br><br>
+	</div>
+	{% block footer %}
+		{{parent()}}
+	{% endblock %}
+{% endblock %}

@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Categoria;
 use App\Entity\Dificultad;
+use App\Entity\Examen;
 use App\Entity\Pregunta;
 use App\Repository\CategoriaRepository;
 use App\Repository\DificultadRepository;
+use App\Repository\ExamenRepository;
 use App\Repository\PreguntaRepository;
+use App\Repository\UsuarioRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -83,8 +86,26 @@ class PreguntaApiController extends AbstractController
         return $this->json($datos, 200);
     }
 
+    #[Route('/pregunta/api/byExamen/{id}', name: 'app_pregunta_api_getAll', methods: ['GET', 'HEAD'])]
+    public function getPreguntasByExamen(ExamenRepository $exarep, int $id, PreguntaRepository $preguntarep): JsonResponse
+    {
+        $examen = $exarep->find($id);
+        $preguntas = $examen->getIdPreguntas();
+        $datos = [];
+
+        if ($preguntas) {
+            foreach ($preguntas as $pregunta) {
+                $datos[] = $preguntarep->toArray($pregunta);
+            }
+        } else {
+            return $this->json(['message' => 'No hay preguntas creadas'], 404);
+        }
+
+        return $this->json($datos, 200);
+    }
+
     #[Route('/pregunta/api/{id}', name: 'app_pregunta_api_getOne', methods: ['GET', 'HEAD'])]
-    public function getPreguntaByID(PreguntaRepository $preguntarep, int $id): JsonResponse
+    public function getPreguntaByID(PreguntaRepository $preguntarep, ExamenRepository $exarep, int $id): JsonResponse
     {
         $pregunta = $preguntarep->findByCategoria($id);
 
