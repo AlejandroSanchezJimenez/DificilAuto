@@ -24,17 +24,17 @@ class IntentoRepository extends ServiceEntityRepository
 //    /**
 //     * @return Intento[] Returns an array of Intento objects
 //     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('i.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   public function findByExamenIDUs($ex,$id): array
+   {
+       return $this->createQueryBuilder('i')
+           ->andWhere('i.idExamen = :val')
+           ->andWhere('i.idAlumno = :val2')
+           ->setParameter('val', $ex)
+           ->setParameter('val2', $id)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?Intento
 //    {

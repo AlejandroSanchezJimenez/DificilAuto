@@ -2,17 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Intento;
 use App\Repository\ExamenRepository;
 use App\Repository\IntentoRepository;
-use App\Repository\PreguntaRepository;
 use App\Repository\UsuarioRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TestChooserController extends AbstractController
+class CheckTestController extends AbstractController
 {
     private $security;
     private $user;
@@ -27,7 +25,7 @@ class TestChooserController extends AbstractController
         $this->intento = $intento;
     }
 
-    #[Route('/testChooser', name: 'app_test_chooser')]
+    #[Route('/checkTest', name: 'app_check_test')]
     public function index(): Response
     {
         $email = $this->security->getUser()->getUserIdentifier();
@@ -35,24 +33,16 @@ class TestChooserController extends AbstractController
         $usuario = $this->user->findOneByEmail($email);
         $id = $usuario->getId();
 
-        if (!empty($_GET["dif"])) {
-            $dif = $_GET["dif"];
-            $examenes = $this->examen->findExamByUserDif($email, $dif);
+        if (!empty($_GET["exId"])&&!empty($_GET["usId"])) {
+            $exId = $_GET["exId"];
+            $usId = $_GET['usId'];
+            $intentos = $this->intento->findByExamenIDUs($exId, $usId);
         } else if ($_GET["cat"]) {
             $examenes = $this->examen->findExamByUserCat($email);
         }
 
-        $intentos = [];
-        $idintentos = $usuario->getIntentos();
-        foreach ($idintentos as $element) {
-            $intento = new Intento();
-            $intento= $this->intento->find($element);
-            array_push($intentos,$intento);
-        }
-        
-        return $this->render('test_chooser/index.html.twig', [
+        return $this->render('check_test/index.html.twig', [
             'rol' => $rol[0],
-            'examenes' => $examenes,
             'logged_user' => $email,
             'id' => $id,
             'intentos' => $intentos

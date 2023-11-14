@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Intento;
 use App\Repository\ExamenRepository;
+use App\Repository\IntentoRepository;
 use App\Repository\PreguntaRepository;
 use App\Repository\UsuarioRepository;
 use DateTime;
@@ -70,5 +71,18 @@ class IntentoApiController extends AbstractController
 
         // Responder con una respuesta JSON
         return $this->json(['message' => 'Intento creado'], 201);
+    }
+
+    #[Route('/intento/api/{id}', name: 'app_intento_get_id', methods: ['GET', 'HEAD'])]
+    public function getIntentoByExamen(IntentoRepository $intento, int $id, PreguntaRepository $preguntarep): JsonResponse
+    {
+        $intento = $intento->find($id);
+        $data = [];
+
+        $data = [
+            'jsonRespuestas' => $intento->getJSONRespuestas()
+        ];
+
+        return $this->json($data, 200);
     }
 }

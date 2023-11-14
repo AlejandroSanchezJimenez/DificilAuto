@@ -61,6 +61,36 @@ window.addEventListener("load", function () {
             });
         });
 
+        var buttonsCheck = document.querySelectorAll(".check");
+
+        // Agrega un evento de clic a cada botón
+        buttonsCheck.forEach(function (button) {
+            button.addEventListener("click", function () {
+                var exId = this.getAttribute("data-exId");
+                var usId = this.getAttribute("data-usId");
+                window.location.href = "/checkTest?exId="+exId+'&usId='+usId;
+            });
+        });
+
+        document.getElementById("cerrarSesion").addEventListener("click", function () {
+            // Redireccionar a la URL "/logout"
+            window.location.href = "/logout";
+        });
+
+        document.getElementById("pageBack").addEventListener("click", function () {
+            window.history.back();
+        });
+    } else if (window.location.pathname === '/checkTest') {
+        var buttonsCheck = document.querySelectorAll(".check");
+
+        buttonsCheck.forEach(function (button) {
+            button.addEventListener("click", function () {
+                var inId = this.getAttribute("data-inId");
+                var exId = this.getAttribute('data-exid');
+                window.location.href = "/test?inId="+inId+'&exId='+exId;
+            });
+        });
+
         document.getElementById("cerrarSesion").addEventListener("click", function () {
             // Redireccionar a la URL "/logout"
             window.location.href = "/logout";

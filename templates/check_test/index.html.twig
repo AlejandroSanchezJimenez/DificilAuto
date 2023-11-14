@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	{% block javascripts %}
+		{{parent()}}
+	{% endblock %}
+
+	{% block header %}
+		{{parent()}}
+	{% endblock %}
+	<div class="contenido">
+		{% set i = 1 %}
+		{% if (intentos is empty)%}
+			<p class="centered">No has realizado ningún intento.</p>
+		{% else %}
+			{% for intento in intentos %}
+				<div class="alum">
+					{% if intento.calificacion<5 %}
+						<div class="num" style="background-color: red">
+							<p class="grande">{{i}}</p>
+						</div>
+					{% else %}
+						<div class="num" style="background-color: #0AA749">
+							<p class="grande">{{i}}</p>
+						</div>
+					{% endif %}
+					<p class="fecha">Fecha:
+						{{intento.Fecha|date('d-m-y')}}
+					</p>
+					<p class="cal">Calificación:
+						{{intento.calificacion}}</p>
+					<button class="check" data-exid={{intento.idExamen.id}} data-inid={{intento.id}}></button>
+				</div>
+				{% set i = i + 1 %}
+			{% endfor %}
+		{% endif %}
+	</div>
+	{% block footer %}
+		{{parent()}}
+	{% endblock %}
+{% endblock %}

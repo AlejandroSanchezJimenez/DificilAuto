@@ -16,10 +16,12 @@
 					<p class="grande">{{i}}</p>
 				</div>
 				<div class="usid">
-					<p class="grande"> {{examen.nombre}} {{examen.examen_id}}</p>
+					<p class="grande">
+						{{examen.nombre}}
+						{{examen.examen_id}}</p>
 				</div>
-				<button class="check" data-exId={{examen.examen_id}}  data-usId={{id}}></button>
-				<button class="enter" data-exId={{examen.examen_id}}  data-usId={{id}}></button>
+				<button class="check" data-exid={{examen.examen_id}} data-usid={{id}}></button>
+				<button class="enter" data-exid={{examen.examen_id}} data-usid={{id}}></button>
 			</div>
 			{% set i = i + 1 %}
 		{% endfor %}
