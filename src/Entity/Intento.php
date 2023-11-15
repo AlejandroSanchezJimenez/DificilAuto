@@ -14,21 +14,21 @@ class Intento
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE,nullable: true)]
     private ?\DateTimeInterface $Fecha = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private array $JSONRespuestas = [];
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $Calificacion = null;
 
     #[ORM\ManyToOne(inversedBy: 'intentos')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Usuario $idAlumno = null;
 
     #[ORM\ManyToOne(inversedBy: 'intentos')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Examen $idExamen = null;
 
     public function getId(): ?int

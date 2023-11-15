@@ -17,70 +17,95 @@ use Symfony\Component\Routing\Annotation\Route;
 class IntentoApiController extends AbstractController
 {
     #[Route('/intento/api', name: 'app_intento_api')]
-    public function addIntento(Request $request, EntityManagerInterface $entityManager, ExamenRepository $exrep, UsuarioRepository $usrep, PreguntaRepository $pregrep): JsonResponse
+    public function addIntento(Request $request, EntityManagerInterface $entityManager, ExamenRepository $exrep, UsuarioRepository $usrep, IntentoRepository $intrep): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        if ($data == null) {
+            $intento = new Intento;
 
-        // Obtener los datos de la solicitud JSON
-        $idalumno = $data['idalumno'];
-        $idexamen = $data['idexamen'];
-        $jsonrespuestas = $data['jsonRespuestas'];
+            $fecha = new DateTime();
+            $intento->setFecha($fecha);
+            // Persistir el intento en la base de datos
+            $entityManager->persist($intento);
+            $entityManager->flush();
 
-        // Crear una nueva fecha actual
-        $fecha = new DateTime();
+            // Responder con una respuesta JSON
+            return $this->json(['message' => 'Intento iniciado'], 201);
+        } else {
+            // Obtener los datos de la solicitud JSON
+            $idalumno = $data['idalumno'];
+            $idexamen = $data['idexamen'];
+            $jsonrespuestas = $data['jsonRespuestas'];
 
-        // Inicializar la calificación en 0
-        $calificacion = 0;
+            // Crear una nueva fecha actual
+            $fecha = new DateTime();
 
-        // Crear un nuevo objeto Intento
-        $intento = new Intento();
+            // Inicializar la calificación en 0
+            $calificacion = 0;
 
-        // Obtener el examen correspondiente
-        $examen = $exrep->find($idexamen);
+            // Crear un nuevo objeto Intento
+            $intento = $intrep->findOneBy([], ['id' => 'DESC']);
 
-        // Inicializar un arreglo para almacenar las respuestas correctas
-        $arrayCorrectas = [];
+            // Obtener el examen correspondiente
+            $examen = $exrep->find($idexamen);
 
-        // Obtener las preguntas del examen
-        $preguntas = $examen->getIdPreguntas();
-        foreach ($preguntas as $pregunta) {
-            // Obtener las respuestas correctas de las preguntas
-            $arrayCorrectas[] = $pregunta->getCorrecta();
-        }
+            // Inicializar un arreglo para almacenar las respuestas correctas
+            $arrayCorrectas = [];
 
-        // Calcular la calificación
-        for ($i = 0; $i < count($arrayCorrectas); $i++) {
-            if ($jsonrespuestas[$i] === $arrayCorrectas[$i]) {
-                $calificacion++;
+            // Obtener las preguntas del examen
+            $preguntas = $examen->getIdPreguntas();
+            foreach ($preguntas as $pregunta) {
+                // Obtener las respuestas correctas de las preguntas
+                $arrayCorrectas[] = $pregunta->getCorrecta();
             }
+
+            // Calcular la calificación
+            for ($i = 0; $i < count($arrayCorrectas); $i++) {
+                if ($jsonrespuestas[$i] === $arrayCorrectas[$i]) {
+                    $calificacion++;
+                }
+            }
+
+            // Obtener el alumno correspondiente
+            $alumno = $usrep->find($idalumno);
+
+            // Configurar los datos del intento
+            $intento->setIdAlumno($alumno);
+            $intento->setIdExamen($examen);
+            $intento->setFecha($fecha);
+            $intento->setJsonRespuestas($jsonrespuestas);
+            $intento->setCalificacion($calificacion);
+
+            // Persistir el intento en la base de datos
+            $entityManager->persist($intento);
+            $entityManager->flush();
+
+            // Responder con una respuesta JSON
+            return $this->json(['message' => 'Intento creado'], 201);
         }
-
-        // Obtener el alumno correspondiente
-        $alumno = $usrep->find($idalumno);
-
-        // Configurar los datos del intento
-        $intento->setIdAlumno($alumno);
-        $intento->setIdExamen($examen);
-        $intento->setFecha($fecha);
-        $intento->setJsonRespuestas($jsonrespuestas);
-        $intento->setCalificacion($calificacion);
-
-        // Persistir el intento en la base de datos
-        $entityManager->persist($intento);
-        $entityManager->flush();
-
-        // Responder con una respuesta JSON
-        return $this->json(['message' => 'Intento creado'], 201);
     }
 
     #[Route('/intento/api/{id}', name: 'app_intento_get_id', methods: ['GET', 'HEAD'])]
-    public function getIntentoByExamen(IntentoRepository $intento, int $id, PreguntaRepository $preguntarep): JsonResponse
+    public function getIntentoByExamen(IntentoRepository $intento, int $id): JsonResponse
     {
         $intento = $intento->find($id);
         $data = [];
 
         $data = [
             'jsonRespuestas' => $intento->getJSONRespuestas()
+        ];
+
+        return $this->json($data, 200);
+    }
+
+    #[Route('/intento/last', name: 'app_intento_get_last')]
+    public function getLastIntento(IntentoRepository $intento): JsonResponse
+    {
+        $intento = $intento->findOneBy([], ['id' => 'DESC']);
+        $data = [];
+
+        $data = [
+            'fecha' => $intento->getFecha()->getTimestamp() * 1000,
         ];
 
         return $this->json($data, 200);

@@ -13,8 +13,13 @@
 		{% if (intentos is empty)%}
 			<p class="centered">No has realizado ningún intento.</p>
 		{% else %}
+			<div class="alumTit">
+			<div class="usid">
+				<p class="grande">Checkear test</p>
+			</div>
+			</div>
 			{% for intento in intentos %}
-				<div class="alum">
+				<div class="alum2">
 					{% if intento.calificacion<5 %}
 						<div class="num" style="background-color: red">
 							<p class="grande">{{i}}</p>

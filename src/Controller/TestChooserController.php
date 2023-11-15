@@ -38,8 +38,10 @@ class TestChooserController extends AbstractController
         if (!empty($_GET["dif"])) {
             $dif = $_GET["dif"];
             $examenes = $this->examen->findExamByUserDif($email, $dif);
+            $tipo = "dif";
         } else if ($_GET["cat"]) {
             $examenes = $this->examen->findExamByUserCat($email);
+            $tipo = "cat";
         }
 
         $intentos = [];
@@ -55,7 +57,8 @@ class TestChooserController extends AbstractController
             'examenes' => $examenes,
             'logged_user' => $email,
             'id' => $id,
-            'intentos' => $intentos
+            'intentos' => $intentos,
+            'tipo' => $tipo
         ]);
     }
 }

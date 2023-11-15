@@ -4,28 +4,29 @@ window.addEventListener("DOMContentLoaded", function () {
         var parametros = new URLSearchParams(window.location.search);
         var exId = parametros.get("exId");
         var usId = parametros.get("usId");
-
-        
-        let tiempoRestante = 600;
+        let tiempoRestante;
         const contadorElemento = document.getElementById('contador');
         const intervalo = setInterval(actualizarContador, 1000);
 
-        function actualizarContador() {
-            const minutos = Math.floor(tiempoRestante / 60);
-            const segundos = tiempoRestante % 60;
-
-            contadorElemento.textContent = `Tiempo: ${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
-
-            tiempoRestante--;
-
-            if (tiempoRestante < 0) {
-                clearInterval(intervalo);
-                alert("¡Tiempo agotado!");
-                finalizar();
-            }
+        if (parametros.get('inId')) { 
+            document.getElementById('contador').remove();
+            document.getElementById('finalizar').remove();
+        } else {
+            fetch("https://localhost:8000/intento/last")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error en la solicitud: ${response.status} - ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const milisegundos = data.fecha;
+                tiempoRestante = calcularTiempoRestante(milisegundos);
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error.message);
+            });
         }
-
-        actualizarContador();
 
         function rellenar() {
             if (parametros.get('inId')) {
@@ -52,6 +53,42 @@ window.addEventListener("DOMContentLoaded", function () {
                         }
                     })
             }
+        }
+
+        function calcularTiempoRestante(horaInicio) {
+            const tiempoLimiteMinutos = 10;
+            const tiempoLimiteSegundos = tiempoLimiteMinutos * 60;
+
+            const diferenciaSegundos = Math.floor((new Date() - horaInicio) / 1000);
+
+            const tiempoRestante = tiempoLimiteSegundos - diferenciaSegundos;
+
+            return tiempoRestante >= 0 ? tiempoRestante : 0;
+        }
+
+        function actualizarContador() {
+            const minutos = Math.floor(tiempoRestante / 60);
+            const segundos = tiempoRestante % 60;
+
+            contadorElemento.textContent = `Tiempo: ${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+
+            tiempoRestante--;
+
+            if (tiempoRestante < 0) {
+                clearInterval(intervalo);
+                alert("¡Tiempo agotado!");
+                finalizar();
+            }
+        }
+
+        function openModal() {
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
         }
 
         function finalizar() {
@@ -81,7 +118,7 @@ window.addEventListener("DOMContentLoaded", function () {
             })
                 .then(response => response.json())
                 .then(data => {
-                    alert('Intento guardado con éxito:', data);
+                    alert('Intento guardado con éxito')
                 })
                 .catch(error => {
                     alert('Error al guardar el intento:', error.message);
@@ -161,7 +198,13 @@ window.addEventListener("DOMContentLoaded", function () {
                 }
             } else if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('finalizar')) {
                 ev.preventDefault();
+                openModal();
+            } else if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('confirm-button')) {
                 finalizar();
+                closeModal();
+                window.location.href = "/home"
+            } else if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('cancel-button')) {
+                closeModal();
             }
         })
 
@@ -230,16 +273,26 @@ window.addEventListener("DOMContentLoaded", function () {
                             var duda = divContent.querySelector('#duda');
                             duda.id = "duda" + i;
 
+                            if (parametros.get('inId')) { 
+                                quitar.remove()
+                                duda.remove()
+                                divContent.querySelector('#dudalbl').remove();
+                            }
+
                             if (siguiente.id == "butt9") {
-                                siguiente.textContent = "Terminar intento";
-                                siguiente.style.width = "150px";
+                                if (parametros.get('inId')) {
+                                    siguiente.remove();
+                                } else {
+                                    siguiente.textContent = "Terminar intento";
+                                    siguiente.style.width = "150px";
+                                }
                             }
 
                             siguiente.addEventListener("click", function (ev) {
                                 ev.preventDefault();
 
                                 if (siguiente.id == "butt9") {
-                                    finalizar();
+                                    openModal();
                                 } else {
                                     this.parentElement.parentElement.style.display = "none";
                                     this.parentElement.parentElement.className = ""
@@ -252,8 +305,8 @@ window.addEventListener("DOMContentLoaded", function () {
                             anterior.addEventListener("click", function (ev) {
                                 ev.preventDefault();
 
-                                if (siguiente.id == "butt0") {
-
+                                if (anterior.id == "butt0") {
+                                    
                                 } else {
                                     this.parentElement.parentElement.style.display = "none";
                                     this.parentElement.parentElement.className = "divActual";

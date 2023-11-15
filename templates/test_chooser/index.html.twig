@@ -9,6 +9,14 @@
 		{{parent()}}
 	{% endblock %}
 	<div class="contenido">
+		<div class="alumTit">
+			<div class="usid">
+				<p class="grande">Seleccionar test</p>
+			</div>
+			{% if tipo=="dif" %}
+				<button class="generar" onclick="generarExamen('{{id}}')"></button>
+			{% endif %}
+		</div>
 		{% set i = 1 %}
 		{% for examen in examenes %}
 			<div class="alum">
@@ -21,7 +29,7 @@
 						{{examen.examen_id}}</p>
 				</div>
 				<button class="check" data-exid={{examen.examen_id}} data-usid={{id}}></button>
-				<button class="enter" data-exid={{examen.examen_id}} data-usid={{id}}></button>
+				<button class="enter" onclick="iniIntento()" data-exid={{examen.examen_id}} data-usid={{id}}></button>
 			</div>
 			{% set i = i + 1 %}
 		{% endfor %}

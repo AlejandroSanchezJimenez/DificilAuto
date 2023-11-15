@@ -9,7 +9,7 @@
 	{% endblock %}
 	<div class="contenido">
 		<form id="nuevoIntentoForm">
-		<div id="content"></div>
+			<div id="content"></div>
 
 			<div class="quizNav">
 				<p class="media">Navegador</p>
@@ -25,11 +25,21 @@
 					<button class="buttonQuiz" id="9">9</button>
 					<button class="buttonQuiz" id="10">10</button>
 				</div>
-                <br>
+				<br>
 				<p class="media" id="contador"></p>
-                <button class="finalizar">Finalizar intento...</button>
+				<button class="finalizar" id="finalizar">Finalizar intento...</button>
 			</div>
 		</form>
+
+		<div id="overlay"></div>
+
+		<div id="modal">
+			<p>¿Estás seguro de terminar el intento?</p>
+			<div id="modal-buttons">
+				<button class="confirm-button">Sí</button>
+				<button class="cancel-button">No</button>
+			</div>
+		</div>
 
 		<br><br>
 	</div>
