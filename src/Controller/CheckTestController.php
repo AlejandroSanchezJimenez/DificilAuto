@@ -33,10 +33,16 @@ class CheckTestController extends AbstractController
         $usuario = $this->user->findOneByEmail($email);
         $id = $usuario->getId();
 
-        if (!empty($_GET["exId"])&&!empty($_GET["usId"])) {
-            $exId = $_GET["exId"];
-            $usId = $_GET['usId'];
-            $intentos = $this->intento->findByExamenIDUs($exId, $usId);
+        if (!empty($_GET["exId"]) && !empty($_GET["usId"])) {
+            if ($rol !== "ROLE_USER") {
+                $exId = $_GET["exId"];
+                $usId = $_GET['usId'];
+                $intentos = $this->intento->findByExamen($exId);
+            } else {
+                $exId = $_GET["exId"];
+                $usId = $_GET['usId'];
+                $intentos = $this->intento->findByExamenIDUs($exId, $usId);
+            }
         } else if ($_GET["cat"]) {
             $examenes = $this->examen->findExamByUserCat($email);
         }

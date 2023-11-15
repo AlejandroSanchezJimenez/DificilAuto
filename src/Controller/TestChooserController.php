@@ -36,22 +36,33 @@ class TestChooserController extends AbstractController
         $id = $usuario->getId();
 
         if (!empty($_GET["dif"])) {
-            $dif = $_GET["dif"];
-            $examenes = $this->examen->findExamByUserDif($email, $dif);
-            $tipo = "dif";
+            if ($rol !== "ROLE_USER") {
+                $dif = $_GET["dif"];
+                $examenes = $this->examen->findExamByDif($dif);
+                $tipo = "dif";
+            } else {
+                $dif = $_GET["dif"];
+                $examenes = $this->examen->findExamByUserDif($email, $dif);
+                $tipo = "dif";
+            }
         } else if ($_GET["cat"]) {
-            $examenes = $this->examen->findExamByUserCat($email);
-            $tipo = "cat";
+            if ($rol !== "ROLE_USER") {
+                $examenes = $this->examen->findExamByCat();
+                $tipo = "cat";
+            } else {
+                $examenes = $this->examen->findExamByUserCat($email);
+                $tipo = "cat";
+            }
         }
 
         $intentos = [];
         $idintentos = $usuario->getIntentos();
         foreach ($idintentos as $element) {
             $intento = new Intento();
-            $intento= $this->intento->find($element);
-            array_push($intentos,$intento);
+            $intento = $this->intento->find($element);
+            array_push($intentos, $intento);
         }
-        
+
         return $this->render('test_chooser/index.html.twig', [
             'rol' => $rol[0],
             'examenes' => $examenes,

@@ -36,6 +36,16 @@ class IntentoRepository extends ServiceEntityRepository
        ;
    }
 
+   public function findByExamen($ex): array
+   {
+       return $this->createQueryBuilder('i')
+           ->andWhere('i.idExamen = :val')
+           ->setParameter('val', $ex)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
 //    public function findOneBySomeField($value): ?Intento
 //    {
 //        return $this->createQueryBuilder('i')
