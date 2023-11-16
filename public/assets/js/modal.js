@@ -1,18 +1,16 @@
 window.addEventListener("load", function () {
-    if (window.location.pathname === '/') {
-        // Obtén referencias a los elementos del DOM
+    if (window.location.pathname === '/') { // declaro las variables a utilizar
         const abrirModal = document.getElementById("abrirModal");
         const modal = document.getElementById("miModal");
         const cerrarModal = document.getElementById("cerrarModal");
         const contenido = document.getElementById('modal-contenido');
         var divContent = document.getElementById('content')
 
-        // Mostrar el modal
-        abrirModal.addEventListener("click", function (ev) {
+        abrirModal.addEventListener("click", function (ev) { // abro el modal trayendome la plantilla de registro
             ev.preventDefault();
             modal.style.display = "block";
             fondoOscurecido.style.display = "block";
-            fetch("https://localhost:8000/register")
+            fetch("https://localhost:8000/register") // fetch get de registro
                 .then(x => x.text())
                 .then(y => {
                     const parser = new DOMParser();
@@ -24,8 +22,7 @@ window.addEventListener("load", function () {
                 });
         });
 
-        // Ocultar el modal
-        cerrarModal.addEventListener("click", function () {
+        cerrarModal.addEventListener("click", function () { // cierro el modal
             modal.style.display = "none";
             fondoOscurecido.style.display = "none";
         });

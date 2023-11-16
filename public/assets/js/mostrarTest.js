@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", function () {
-    if (window.location.pathname === '/test') {
+    if (window.location.pathname === '/test') { //comprobamos que la página sea la actual para no declarar nada sin motivo
         const pantalla = document.getElementById('nuevoIntentoForm');
         var parametros = new URLSearchParams(window.location.search);
         var exId = parametros.get("exId");
@@ -7,28 +7,24 @@ window.addEventListener("DOMContentLoaded", function () {
         let tiempoRestante;
         const contadorElemento = document.getElementById('contador');
         const intervalo = setInterval(actualizarContador, 1000);
+        var jsonRespuestas = []
 
-        if (parametros.get('inId')) { 
+        if (parametros.get('inId')) { //en caso de que venga de checkTest quito el contador y el botón de finalizar
             document.getElementById('contador').remove();
             document.getElementById('finalizar').remove();
-        } else {
+        } else { // en caso contrario obtengo de la BD la fecha de inicio y calculo el tiempo restante usando la función declarada más abajo
             fetch("https://localhost:8000/intento/last")
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error en la solicitud: ${response.status} - ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const milisegundos = data.fecha;
-                tiempoRestante = calcularTiempoRestante(milisegundos);
-            })
-            .catch(error => {
-                console.error('Error en la solicitud:', error.message);
-            });
+                .then(x => x.json())
+                .then(data => {
+                    const milisegundos = data.fecha;
+                    tiempoRestante = calcularTiempoRestante(milisegundos);
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error.message);
+                });
         }
 
-        function rellenar() {
+        function rellenar() { // con esta función relleno las preguntas en caso de que vengamos de CheckTest 
             if (parametros.get('inId')) {
                 this.document.body.addEventListener("click", function (ev) {
                     ev.preventDefault();
@@ -38,13 +34,13 @@ window.addEventListener("DOMContentLoaded", function () {
                     .then(x => x.json())
                     .then(preg => {
                         for (var clave in preg) {
-                            for (var i = 0; i < preg[clave].length; i++) {
+                            for (var i = 0; i < preg[clave].length; i++) { // por cada valor busco los inputs relacionados por pregunta
                                 var name = "preg" + i;
                                 var radioElements = document.querySelectorAll('input[type="radio"][name="' + name + '"]');
 
                                 if (radioElements.length > 0) {
                                     for (var j = 0; j < radioElements.length; j++) {
-                                        if (radioElements[j].id == preg[clave][i]) {
+                                        if (radioElements[j].id == preg[clave][i]) { //si coinciden id de input y de jsonRespuestas, pongo el checked en true
                                             radioElements[j].checked = true;
                                         }
                                     }
@@ -52,10 +48,24 @@ window.addEventListener("DOMContentLoaded", function () {
                             }
                         }
                     })
+            } else if (localStorage.getItem('respuestas')) { // en caso de que existan datos de respuestas en el localstorage, los vuelco igual que si viniese de CheckTest
+                var arrayRespuestas = JSON.parse(localStorage.getItem('respuestas'));
+                for (var i = 0; i < 10; i++) {
+                    var name = "preg" + i;
+                    var radioElements = document.querySelectorAll('input[type="radio"][name="' + name + '"]');
+
+                    if (radioElements.length > 0) {
+                        for (var j = 0; j < radioElements.length; j++) {
+                            if (radioElements[j].id == arrayRespuestas[i]) {
+                                radioElements[j].checked = true;
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        function calcularTiempoRestante(horaInicio) {
+        function calcularTiempoRestante(horaInicio) { // función para calcular el tiempo restante, declaro tiempo limite en min y seg, calculo diferencia en segundos 
             const tiempoLimiteMinutos = 10;
             const tiempoLimiteSegundos = tiempoLimiteMinutos * 60;
 
@@ -66,7 +76,7 @@ window.addEventListener("DOMContentLoaded", function () {
             return tiempoRestante >= 0 ? tiempoRestante : 0;
         }
 
-        function actualizarContador() {
+        function actualizarContador() { // actualiza el contador y lanzamos un alert cuando se acaba el tiempo
             const minutos = Math.floor(tiempoRestante / 60);
             const segundos = tiempoRestante % 60;
 
@@ -81,29 +91,37 @@ window.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        function openModal() {
+        function openModal() { // functión para abrir el modal de finalizar 
             document.getElementById('modal').style.display = 'block';
             document.getElementById('overlay').style.display = 'block';
         }
 
-        function closeModal() {
+        function closeModal() { // función para cerrar el modal de finalizar
             document.getElementById('modal').style.display = 'none';
             document.getElementById('overlay').style.display = 'none';
         }
 
-        function finalizar() {
+        function finalizar() { // función para finalizar el examen
+            localStorage.clear(); // nos cargamos el localstorage para que no tenga conflicto con otros éxamenes
             respuestas = [];
-            for (var i = 0; i < 10; i++) {
+            for (var i = 0; i < 10; i++) { // por cada pregunta buscamos todos sus inputs y guardamos el id de los checkeados, si no hay ninguno checkeado guardamos ''
                 var name = "preg" + i;
                 var radioElements = document.querySelectorAll('input[type="radio"][name="' + name + '"]');
+
+                var isChecked = false;
 
                 radioElements.forEach(function (radioInput) {
                     if (radioInput.checked) {
                         respuestas.push(radioInput.id);
+                        isChecked = true;
                     }
                 });
+
+                if (!isChecked) {
+                    respuestas.push('');
+                }
             }
-            const postIntentoData = {
+            const postIntentoData = { // declaramos los datos listos para enviar por fetch post
                 jsonRespuestas: respuestas,
                 idalumno: usId,
                 idexamen: exId
@@ -125,8 +143,8 @@ window.addEventListener("DOMContentLoaded", function () {
                 });
         }
 
-        document.addEventListener("keydown", function (ev) {
-            var divActual = document.getElementsByClassName('divActual')
+        document.addEventListener("keydown", function (ev) { // lista de eventos de pulsación para manejar el test entero mediante teclado
+            var divActual = document.getElementsByClassName('divActual') // nos limitamos a buscar el div actual y dentro de este los campos pertinentes, una vez encontrados los clicamos
             if (ev.code == "ArrowRight") {
                 ev.preventDefault()
                 var butt = divActual[0].getElementsByClassName('siguiente');
@@ -171,9 +189,9 @@ window.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        this.document.body.addEventListener("click", function (ev) {
+        this.document.body.addEventListener("click", function (ev) { // lista de eventos de clicado 
 
-            if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('quitar')) {
+            if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('quitar')) { // cambia el checked del input a false 
                 ev.preventDefault();
                 var cadena = ev.target.id;
                 var numMatch = cadena.match(/\d+$/);
@@ -184,7 +202,7 @@ window.addEventListener("DOMContentLoaded", function () {
                 options.forEach(function (opt) {
                     opt.checked = false;
                 })
-            } else if (ev.target.tagName === "INPUT" && ev.target.classList.contains('duda')) {
+            } else if (ev.target.tagName === "INPUT" && ev.target.classList.contains('duda')) { // pinta como duda en el navegador la pregunta y viceversa
                 var cadena = ev.target.id;
                 var numMatch = cadena.match(/\d+$/);
                 var num = parseInt(numMatch, 10);
@@ -196,22 +214,30 @@ window.addEventListener("DOMContentLoaded", function () {
                     var butt = document.getElementById(num + 1);
                     butt.style.backgroundColor = "";
                 }
-            } else if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('finalizar')) {
+            } else if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('finalizar')) { // abre modal
                 ev.preventDefault();
                 openModal();
-            } else if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('confirm-button')) {
+            } else if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('confirm-button')) { // finaliza el test y redirecciona
                 finalizar();
                 closeModal();
                 window.location.href = "/home"
-            } else if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('cancel-button')) {
+            } else if (ev.target.tagName === "BUTTON" && ev.target.classList.contains('cancel-button')) { // cierra modal
                 closeModal();
+            } else if (ev.target.tagName === 'INPUT' && ev.target.type === 'radio' && parametros.get('inId') === null) { // guarda en localstorage cada vez que se clica en un input
+                var cadena = ev.target.parentElement.parentElement.id;
+                var numMatch = cadena.match(/\d+$/);
+                var num = parseInt(numMatch, 10);
+
+                jsonRespuestas[num] = ev.target.className;
+
+                localStorage.setItem('respuestas', JSON.stringify(jsonRespuestas));
             }
         })
 
-        fetch("https://localhost:8000/pregunta/api/byExamen/" + exId)
+        fetch("https://localhost:8000/pregunta/api/byExamen/" + exId) // fetch que trae un examen dependiendo de su id, la cual obtenemos mediante get de servidor
             .then(x => x.json())
             .then(preg => {
-                for (let i = 0; i < preg.length; i++) {
+                for (let i = 0; i < preg.length; i++) { // por cada pregunta nos traemos una plantilla y la rellenamos
                     fetch("https://localhost:8000/plantillaPreg")
                         .then(x => x.text())
                         .then(y => {
@@ -273,7 +299,7 @@ window.addEventListener("DOMContentLoaded", function () {
                             var duda = divContent.querySelector('#duda');
                             duda.id = "duda" + i;
 
-                            if (parametros.get('inId')) { 
+                            if (parametros.get('inId')) {
                                 quitar.remove()
                                 duda.remove()
                                 divContent.querySelector('#dudalbl').remove();
@@ -288,7 +314,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                 }
                             }
 
-                            siguiente.addEventListener("click", function (ev) {
+                            siguiente.addEventListener("click", function (ev) { // al pulsar en siguiente ubico en que div estoy y cual es el siguiente para cambiar su display
                                 ev.preventDefault();
 
                                 if (siguiente.id == "butt9") {
@@ -302,11 +328,11 @@ window.addEventListener("DOMContentLoaded", function () {
                                 }
                             });
 
-                            anterior.addEventListener("click", function (ev) {
+                            anterior.addEventListener("click", function (ev) { // igual que siguiente para el anterior
                                 ev.preventDefault();
 
                                 if (anterior.id == "butt0") {
-                                    
+
                                 } else {
                                     this.parentElement.parentElement.style.display = "none";
                                     this.parentElement.parentElement.className = "divActual";
@@ -316,7 +342,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                 }
                             });
 
-                            const buttonQuiz = document.querySelectorAll('.buttonQuiz');
+                            const buttonQuiz = document.querySelectorAll('.buttonQuiz'); // igual que siguiente pero desde el display de navegador
                             buttonQuiz.forEach(function (button) {
                                 button.addEventListener("click", function (ev) {
                                     ev.preventDefault();
@@ -332,7 +358,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                 })
                             });
 
-                            rellenar();
+                            rellenar(); // rellenar en caso de que vengamos de TestChooser
                         });
                 }
             });

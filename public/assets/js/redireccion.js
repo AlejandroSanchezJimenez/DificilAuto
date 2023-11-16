@@ -1,8 +1,7 @@
-window.addEventListener("load", function () {
+window.addEventListener("load", function () { // redireccionado de todas las páginas desde js 
 
     if ((window.location.pathname === '/validaAlumnos') || (window.location.pathname === '/creaPreguntas') || (window.location.pathname === '/creaExamen') || (window.location.pathname === '/test')) {
         document.getElementById("cerrarSesion").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
             window.location.href = "/logout";
         });
 
@@ -11,69 +10,60 @@ window.addEventListener("load", function () {
         });
     } else if (window.location.pathname === '/home') {
         document.getElementById("cerrarSesion").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
             window.location.href = "/logout";
         });
 
         document.getElementById("examenInicial").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
             window.location.href = "/testChooser?dif=1";
         });
 
         document.getElementById("examenMedia").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
             window.location.href = "/testChooser?dif=2";
         });
 
         document.getElementById("examenAlta").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
             window.location.href = "/testChooser?dif=3";
         });
 
         document.getElementById("examenCategoria").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
             window.location.href = "/testChooser?cat=cat";
         });
 
-        document.getElementById("creaPreguntas").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
-            window.location.href = "/creaPreguntas";
-        });
+        if (!document.getElementById('roltag').textContent.includes('ROLE_USER')) {
+            document.getElementById("creaPreguntas").addEventListener("click", function () {
+                window.location.href = "/creaPreguntas";
+            });
 
-        document.getElementById("creaExamenes").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
-            window.location.href = "/creaExamen";
-        });
+            document.getElementById("creaExamenes").addEventListener("click", function () {
+                window.location.href = "/creaExamen";
+            });
 
-        document.getElementById("validaAlumnos").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
-            window.location.href = "/validaAlumnos";
-        });
+            document.getElementById("validaAlumnos").addEventListener("click", function () {
+                window.location.href = "/validaAlumnos";
+            });
+        }
     } else if (window.location.pathname === '/testChooser') {
         var buttons = document.querySelectorAll(".enter");
 
-        // Agrega un evento de clic a cada botón
         buttons.forEach(function (button) {
-            button.addEventListener("click", function () {
+            button.addEventListener("click", function () { // obtengo parametros como get
                 var exId = this.getAttribute("data-exId");
                 var usId = this.getAttribute("data-usId");
-                window.location.href = "/test?exId="+exId+'&usId='+usId;
+                window.location.href = "/test?exId=" + exId + '&usId=' + usId;
             });
         });
 
         var buttonsCheck = document.querySelectorAll(".check");
 
-        // Agrega un evento de clic a cada botón
         buttonsCheck.forEach(function (button) {
-            button.addEventListener("click", function () {
+            button.addEventListener("click", function () { // obtengo parametros como get
                 var exId = this.getAttribute("data-exId");
                 var usId = this.getAttribute("data-usId");
-                window.location.href = "/checkTest?exId="+exId+'&usId='+usId;
+                window.location.href = "/checkTest?exId=" + exId + '&usId=' + usId;
             });
         });
 
         document.getElementById("cerrarSesion").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
             window.location.href = "/logout";
         });
 
@@ -84,15 +74,14 @@ window.addEventListener("load", function () {
         var buttonsCheck = document.querySelectorAll(".check");
 
         buttonsCheck.forEach(function (button) {
-            button.addEventListener("click", function () {
+            button.addEventListener("click", function () { // obtengo parametros como get
                 var inId = this.getAttribute("data-inId");
                 var exId = this.getAttribute('data-exid');
-                window.location.href = "/test?inId="+inId+'&exId='+exId;
+                window.location.href = "/test?inId=" + inId + '&exId=' + exId;
             });
         });
 
         document.getElementById("cerrarSesion").addEventListener("click", function () {
-            // Redireccionar a la URL "/logout"
             window.location.href = "/logout";
         });
 

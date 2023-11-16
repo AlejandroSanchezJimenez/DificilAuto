@@ -1,9 +1,9 @@
 window.addEventListener("DOMContentLoaded", function () {
-    if (window.location.pathname === '/validaAlumnos') {
+    if (window.location.pathname === '/validaAlumnos') { // declaro las variables a utilizar
         const acceptButtons = document.querySelectorAll('.accept');
         const cancelButtons = document.querySelectorAll('.cancel');
 
-        acceptButtons.forEach(button => {
+        acceptButtons.forEach(button => { // cada vez que pulse el boton accept obtengo el rol seleccionado y el usuario a cambiar 
             button.addEventListener('click', (ev) => {
                 ev.preventDefault();
 
@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded", function () {
                     isVerified: true
                 };
 
-                fetch("https://localhost:8000/usuario/api/editar/" + id, {
+                fetch("https://localhost:8000/usuario/api/editar/" + id, { // hago el update
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
         })
 
-        cancelButtons.forEach(button => {
+        cancelButtons.forEach(button => { // cada vez que pulse el botón cancelar, borro al usuario de la BD segun id
             button.addEventListener('click', (ev) => {
                 ev.preventDefault();
 
@@ -48,13 +48,13 @@ window.addEventListener("DOMContentLoaded", function () {
                 })
                     .then(x => x.json())
                     .then(data => {
-                        alert('Usuario aceptado con éxito:', data);
+                        alert('Usuario borrado con éxito:', data);
                     })
                     .catch(error => {
-                        alert('Error al denegar el usuario:', error);
+                        // alert('Error al denegar el usuario:', error);
                     });
 
-                    // window.location.reload();
+                    window.location.reload();
             })
         });
     }

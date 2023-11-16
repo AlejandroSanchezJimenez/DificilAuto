@@ -29,9 +29,7 @@
 						{{examen.examen_id}}</p>
 				</div>
 				<button class="check" data-exid={{examen.examen_id}} data-usid={{id}}></button>
-				{% if rol=="ROLE_USER "%}
 				<button class="enter" onclick="iniIntento()" data-exid={{examen.examen_id}} data-usid={{id}}></button>
-				{% endif %}
 			</div>
 			{% set i = i + 1 %}
 		{% endfor %}

@@ -289,6 +289,7 @@ button:hover {
     text-align: center;
     margin-top: 30px;
     margin-right: 50px;
+    height: 40px;
 }
 
 button.cerrarSesion {

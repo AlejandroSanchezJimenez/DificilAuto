@@ -1,4 +1,4 @@
-function getBase64(file) {
+function getBase64(file) { // convierte un archivo a base64
     return new Promise((resolve, reject) => {
         var reader = new FileReader();
 
@@ -11,11 +11,11 @@ function getBase64(file) {
     });
 }
 
-function iniIntento() {
+function iniIntento() { // inicializa un intento cada vez que entras al examen
     fetch("https://localhost:8000/intento/api")
 }
 
-function generarExamen(user) {
+function generarExamen(user) { // genera un examen aleatorio segun dificultad para el usuario que lo solicite
 
     var arrayUser = []
     arrayUser.push(user);
@@ -47,5 +47,5 @@ function generarExamen(user) {
         alert('Error al aceptar el usuario:', error);
     });
 
-    window.location.href = "/testChooser?dif="+dif
+    window.location.href = "/testChooser?dif="+dif //redireeciono
 }

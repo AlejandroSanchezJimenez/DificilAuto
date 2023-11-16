@@ -1,4 +1,4 @@
-window.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("DOMContentLoaded", function () { // declaro los elementos que voy a usar 
     var radioCategoria = document.getElementById('radioCategoria');
     var radioDificultad = document.getElementById('radioDificultad');
     var formulario = document.getElementById('nuevoExamenForm');
@@ -7,9 +7,9 @@ window.addEventListener("DOMContentLoaded", function () {
     const limit = 10;
 
     if (window.location.pathname === '/creaExamen') {
-        radioCategoria.addEventListener('change', function () {
+        radioCategoria.addEventListener('change', function () { // creo un evento que detecte cuando pulse el input de categoria 
             if ((radioCategoria.checked)) {
-                const generadas = document.querySelectorAll('.generadaDif');
+                const generadas = document.querySelectorAll('.generadaDif'); // borro todos los elementos generados (si lo hay) de examen por dificultad
                 generadas.forEach(function (elemento) {
                     elemento.remove()
                 });
@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", function () {
                 option.innerHTML = "Sin seleccionar";
                 option.selected = true;
                 select.appendChild(option);
-                fetch("https://localhost:8000/categoria/api")
+                fetch("https://localhost:8000/categoria/api") //relleno el select con todos los nombres de categorias
                     .then(x => x.json())
                     .then(y => {
                         for (let i = 0; i < y.length; i++) {
@@ -47,7 +47,7 @@ window.addEventListener("DOMContentLoaded", function () {
                 labelCat.appendChild(br);
                 labelCat.appendChild(select);
 
-                select.addEventListener('change', function () {
+                select.addEventListener('change', function () { // creo evento cuando este valor cambie
                     if (document.querySelectorAll('.checkboxes') !== null) {
                         const generadas2 = document.querySelectorAll('.checkboxes');
                         generadas2.forEach(function (elemento) {
@@ -70,7 +70,7 @@ window.addEventListener("DOMContentLoaded", function () {
                     var combo = document.getElementById('categoria');
                     var selected = combo.options[combo.selectedIndex].value;
 
-                    fetch("https://localhost:8000/pregunta/api/" + selected)
+                    fetch("https://localhost:8000/pregunta/api/" + selected) // cargo las preguntas según categoria 
                         .then(response => {
                             if (response.status === 404) {
                                 var option = document.createElement('option');
@@ -98,7 +98,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                 const br = document.createElement("br");
                                 br.className = "generadaBRCat";
 
-                                checkbox.addEventListener('change', function () {
+                                checkbox.addEventListener('change', function () { // cada vez que pulse un checkbox, miro si la longitud iguala a los que necesito para poder elegir usuario
                                     const checkboxesMarcados = document.querySelectorAll('.checkboxes:checked').length;
 
                                     if (checkboxesMarcados === limit) {
@@ -107,7 +107,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                         div.id = "alumnos";
                                         div.className = "alumnos";
 
-                                        fetch("/usuario/api/")
+                                        fetch("/usuario/api/") // muestro los usuarios
                                             .then(response => {
                                                 if (response.status === 404) {
                                                     var option = document.createElement('option');
@@ -142,7 +142,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                                     div.appendChild(label);
                                                     labelAlum.appendChild(div);
 
-                                                    checkbox.addEventListener('change', function () {
+                                                    checkbox.addEventListener('change', function () { // cuando haya mínimo un usuario seleccionado, lo muestro
                                                         const checkboxesMarcados = document.querySelectorAll('.checkboxesAlum:checked').length;
 
                                                         if (checkboxesMarcados >= 1) {
@@ -157,7 +157,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                                                 formulario.appendChild(div);
                                                                 pantalla.style.paddingBottom = "8%";
 
-                                                                save.addEventListener("click", function (ev) {
+                                                                save.addEventListener("click", function (ev) { // creo un evento al pulsar el botón de save y llamo a la api de examen
                                                                     ev.preventDefault();
 
                                                                     const checkboxesMarcados = document.querySelectorAll('.checkboxes:checked');
@@ -184,9 +184,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                                                         dificultad: null
                                                                     };
 
-                                                                    console.log(postExamenData);
-
-                                                                    fetch("https://localhost:8000/examen/api", {
+                                                                    fetch("https://localhost:8000/examen/api", { // realizo el post
                                                                         method: 'POST',
                                                                         headers: {
                                                                             'Content-Type': 'application/json',
@@ -204,7 +202,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                                                 });
                                                             }
                                                         } else if ((document.getElementById("alumnos") !== null) && (checkboxesMarcados < 1)) {
-                                                            document.querySelector(".save").remove();
+                                                            document.querySelector(".save").remove(); // si desclico el alumno no dejo guardar
                                                         }
                                                     })
                                                 }
@@ -213,7 +211,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                                 alert('Error al aceptar el usuario: ' + error.message);
                                             });
                                     } else if ((document.getElementById("alumnos") !== null) && (checkboxesMarcados != limit)) {
-                                        document.querySelector(".alumnos").remove();
+                                        document.querySelector(".alumnos").remove(); // si desclico una pregunta no muestro alumnos
                                     }
                                 })
 
@@ -229,7 +227,7 @@ window.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        radioDificultad.addEventListener('change', function () {
+        radioDificultad.addEventListener('change', function () { // misma ejecución que con categoria 
             if (radioDificultad.checked) {
                 const generadas2 = document.querySelectorAll('.checkboxes');
                 generadas2.forEach(function (elemento) {
@@ -269,7 +267,7 @@ window.addEventListener("DOMContentLoaded", function () {
                 option.innerHTML = "Sin seleccionar";
                 option.selected = true;
                 select.appendChild(option);
-                fetch("https://localhost:8000/dificultad/api")
+                fetch("https://localhost:8000/dificultad/api") // añado al select las opciones de dificultad
                     .then(x => x.json())
                     .then(y => {
                         for (let i = 0; i < y.length; i++) {
@@ -282,7 +280,7 @@ window.addEventListener("DOMContentLoaded", function () {
                 labelDif.appendChild(br);
                 labelDif.appendChild(select);
 
-                select.addEventListener('change', function () {
+                select.addEventListener('change', function () { // al cambiar muestro los alumnos
                     if (document.getElementById("alumnos") !== null) {
                         const generadas = document.querySelectorAll('.alumnos');
                         generadas.forEach(function (elemento) {
@@ -294,7 +292,7 @@ window.addEventListener("DOMContentLoaded", function () {
                     div.id = "alumnos";
                     div.className = "alumnos";
 
-                    fetch("/usuario/api/")
+                    fetch("/usuario/api/") // muestro los alumnos
                         .then(response => {
                             if (response.status === 404) {
                                 var option = document.createElement('option');
@@ -327,7 +325,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                 div.appendChild(label);
                                 labelAlum.appendChild(div);
 
-                                checkbox.addEventListener('change', function () {
+                                checkbox.addEventListener('change', function () { // cuando haya mínimo un alumno muestro el save
                                     const checkboxesMarcados = document.querySelectorAll('.checkboxes:checked').length;
 
                                     if (checkboxesMarcados >= 1) {
@@ -342,7 +340,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                             formulario.appendChild(div);
                                             pantalla.style.paddingBottom = "8%";
 
-                                            save.addEventListener("click", function (ev) {
+                                            save.addEventListener("click", function (ev) { // al pulsar el save reuno la información y realizo el post
                                                 ev.preventDefault();
 
                                                 const checkboxesMarcadosAlum = document.querySelectorAll('.checkboxes:checked');
@@ -362,9 +360,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                                     categoria: null
                                                 };
 
-                                                console.log(postExamenDataDif);
-
-                                                fetch("https://localhost:8000/examen/api", {
+                                                fetch("https://localhost:8000/examen/api", { // realizo el post
                                                     method: 'POST',
                                                     headers: {
                                                         'Content-Type': 'application/json',
@@ -382,7 +378,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                             });
                                         }
                                     } else if ((document.getElementById("alumnos") !== null) && (checkboxesMarcados != limit)) {
-                                        document.querySelector(".save").remove();
+                                        document.querySelector(".save").remove(); // si quito los alumnos no muestro el save
                                     }
                                 })
                             }

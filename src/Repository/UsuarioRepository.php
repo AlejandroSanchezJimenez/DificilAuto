@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<Usuario>
-* @implements PasswordUpgraderInterface<Usuario>
+ * @implements PasswordUpgraderInterface<Usuario>
  *
  * @method Usuario|null find($id, $lockMode = null, $lockVersion = null)
  * @method Usuario|null findOneBy(array $criteria, array $orderBy = null)
@@ -39,39 +39,46 @@ class UsuarioRepository extends ServiceEntityRepository implements PasswordUpgra
         $this->getEntityManager()->flush();
     }
 
-   /**
-    * @return Usuario[] Returns an array of Usuario objects
-    */
-   public function findNoVerified(): array
-   {
-       return $this->createQueryBuilder('u')
-           ->andWhere('u.isVerified = :val')
-           ->setParameter('val', '0')
-           ->getQuery()
-           ->getResult()
-       ;
-   }
+    /**
+     * @return Usuario[] Returns an array of Usuario objects
+     */
+    public function findNoVerified(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.isVerified = :val')
+            ->setParameter('val', '0')
+            ->getQuery()
+            ->getResult();
+    }
 
-   /**
-    * @return Usuario[] Returns an array of Usuario objects
-    */
+    /**
+     * @return Usuario[] Returns an array of Usuario objects
+     */
     public function findUsers(): array
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.roles like :val')
             ->setParameter('val', '%"ROLE_USER"%')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
-   public function findOneByEmail($value): ?Usuario
-   {
-       return $this->createQueryBuilder('u')
-           ->andWhere('u.Email = :val')
-           ->setParameter('val', $value)
-           ->getQuery()
-           ->getOneOrNullResult()
-       ;
-   }
+    public function remove(Usuario $usuario)
+    {
+        return $this->createQueryBuilder('u')
+            ->delete(Usuario::class, 'u')
+            ->andWhere('u.id = :id')
+            ->setParameter('id', $usuario->getId())
+            ->getQuery()
+            ->execute();
+    }
+
+    public function findOneByEmail($value): ?Usuario
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.Email = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -1,4 +1,4 @@
-window.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("DOMContentLoaded", function () { // declaro lo que voy a usar
     var select1 = document.getElementById("categoria");
     var select2 = document.getElementById("dificultad");
     var save = document.getElementById("save");
@@ -6,7 +6,7 @@ window.addEventListener("DOMContentLoaded", function () {
     var imagen = document.getElementById('imagenPrevia');
 
     if (window.location.pathname === '/creaPreguntas') {
-        fichero.addEventListener('change', function (ev) {
+        fichero.addEventListener('change', function (ev) { // evento que muestra la foto que adjunte
             var lector = new FileReader();
             lector.readAsDataURL(this.files[0])
             lector.onload = function (ev) {
@@ -15,7 +15,7 @@ window.addEventListener("DOMContentLoaded", function () {
             }
         })
 
-        fetch("https://localhost:8000/categoria/api")
+        fetch("https://localhost:8000/categoria/api") // relleno el select con categorias
             .then(x => x.json())
             .then(y => {
                 for (let i = 0; i < y.length; i++) {
@@ -25,7 +25,7 @@ window.addEventListener("DOMContentLoaded", function () {
                     select1.appendChild(option);
                 }
             });
-        fetch("https://localhost:8000/dificultad/api")
+        fetch("https://localhost:8000/dificultad/api") // relleno el select con dificultad
             .then(x => x.json())
             .then(y => {
                 for (let i = 0; i < y.length; i++) {
@@ -36,7 +36,7 @@ window.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-        save.addEventListener("click", function (ev) {
+        save.addEventListener("click", function (ev) { // evento que al clicar en save reune los datos y los envia por post
             ev.preventDefault();
 
             const selectedFile = document.getElementById("imagenVideo").files[0];
@@ -74,10 +74,7 @@ window.addEventListener("DOMContentLoaded", function () {
                         idDificultad: selectedDifVal
                     };
 
-                    console.log(updatedPreguntaData);
-
-                    // Aquí realizas la solicitud Fetch dentro de la función onload
-                    fetch("https://localhost:8000/pregunta/api/", {
+                    fetch("https://localhost:8000/pregunta/api/", { // envío el post
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -93,10 +90,9 @@ window.addEventListener("DOMContentLoaded", function () {
                         });
                 };
 
-                // Lee el archivo como base64
                 reader.readAsDataURL(selectedFile);
             }
-            window.scrollTo(0, 0);
+            window.scrollTo(0, 0); // vuelvo arriba 
         })
     }
 });
